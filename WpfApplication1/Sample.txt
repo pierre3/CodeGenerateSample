@@ -1,0 +1,11 @@
+﻿名前,生年月日,年齢,メルマガ購読
+Name:String, Birthday:DateTime, Age:Byte, IsSubscribed:Boolean
+孫悟空,1935/6/6,35,false
+フリーザ,1945/1/27,22,false
+ベジータ,1973/5/7,30,true
+ピッコロ,1982/7/9,86,false
+天津飯,1950/10/13,22,true
+クリリン,1981/4/10,48,true
+ヤムチャ,1964/6/6,19,false
+ウーロン,1937/6/12,52,true
+ブルマ,1977/2/19,30,false

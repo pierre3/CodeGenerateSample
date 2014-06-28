@@ -1,0 +1,47 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using HandyUtil.Extensions.System;
+
+namespace WpfApplication1.Models
+{
+	public class GeneratedRecord
+	{
+
+<# foreach(var def in ColumnDefinitions) { #>
+		public <#= def.TypeName #> <#= def.PropertyName #>{ set; get; }
+<# } #>
+
+		public GeneratedRecord(IEnumerable<string> header, IEnumerable<string> row)
+		{
+			var record = header.Zip(row, (h, r) => new KeyValuePair<string, string>(h, r))
+				.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+<# foreach(var def in ColumnDefinitions) { #>
+			this.<#= def.PropertyName #> = record.ContainsKey("<#= def.ColumnName #>")
+				? record["<#= def.ColumnName #>"].To<#= def.TypeName #>()
+				: default(<#= def.TypeName #>);
+<# } #>
+		}
+	}
+
+	public class GeneratedRecordCollection : IRecordCollection
+	{
+		private ObservableCollection<GeneratedRecord> _records = new ObservableCollection<GeneratedRecord>();
+
+		public IEnumerable Items{ get{ return _records; } }
+
+		public void AddRecord(IEnumerable<string> header, IEnumerable<string> row)
+		{
+			_records.Add(new GeneratedRecord(header,row));
+		}    
+	}
+}

@@ -24,9 +24,4 @@ namespace WpfApplication1
             dataGrid1.ItemsSource = VM.Records.Items;
         }
     }
-
-   
-
-    
-
 }

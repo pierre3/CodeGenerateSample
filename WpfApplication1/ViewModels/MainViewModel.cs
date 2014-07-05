@@ -31,17 +31,19 @@ namespace WpfApplication1.ViewModels
                 var header = line.Split(',');
 
                 //カラム定義部を読み取り
+                //name1:type1, name2:type2, name3:type3, ...
                 line = reader.ReadLine();
                 var defs = line.Split(',').Select(x => x.Split(':'))
                     .Select(x => new { name = x[0].Trim(), type = x[1].Trim() });
-                
+
                 //カラム定義から、レコード読み取り用オブジェクトを自動生成
-                var fieldDefs = header.Zip(defs, (h, d) => new RecordGenerator.ColumnDefinition()
+                var fieldDefs = header.Zip(defs,(h, d) => new RecordGenerator.ColumnDefinition()
                 {
                     ColumnName = h,
                     PropertyName = d.name,
                     TypeName = d.type
                 });
+
                 Records = CreateRecordCollection(fieldDefs);
 
                 //レコード本体を読み取り
@@ -110,6 +112,7 @@ namespace WpfApplication1.ViewModels
                     return null;
                 }
             }
+
             //アセンブリから目的のクラスを取得してインスタンスを生成
             var type = assembly.GetType("WpfApplication1.Models.GeneratedRecordCollection");
             return (IRecordCollection)Activator.CreateInstance(type);
